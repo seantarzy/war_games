@@ -4,13 +4,14 @@ let allPlayersInGame = []
 let computerDeck = []
 let userScore = 0
 let computerScore = 0
-
+let currentUser = ''
+let TURN = 0
 
 document.addEventListener("DOMContentLoaded", function(e){
     getPlayers()
     .then(() => {
         i = 0
-        while (i < 52) {
+        while (i < 200) {
        const firstRandomPlayer = allPlayersArray[[Math.floor(Math.random() * allPlayersArray.length)]]
         allPlayersArray.pop(firstRandomPlayer)
         user1Deck.push(firstRandomPlayer)
@@ -117,7 +118,6 @@ function getPlayers(){
                     <span>SB</span><p>${player.stolen_bases}</p>
                 </div>
                 `
-                
 
                 // hitterName.innerText = player.name         
                 // hitterWar.innerText = player.war
@@ -164,40 +164,87 @@ function getPlayers(){
 
 
     document.addEventListener('click', function(e) {
-        if(e.target.id === "computer-deck"){
+        if(e.target.id === "submit"){
+            e.preventDefault()
+            e.target.parentNode.classList.add('hide')
+            username = e.target.parentNode.children[1].value
+            currentUser = username
+            fetch("http://localhost:3000/users/new",{
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                body: JSON.stringify({
+                    "username": username
+                })
+            })
+        }
+        if (e.target.id === "computer-deck") {
+            hand = (document.getElementsByClassName('container'))
+            for (let item of hand){
+                // console.log(item)
+            }
             dealComputerCard() //end of one card in play if statement
         }
 
       if(e.target.className === "deck2"){
-            let hand = document.getElementsByClassName('container')
-            for (let item of hand) {
-                if (!(item.id === "user-deck")){
-                item.children[0].src = user1Deck[0].image
-                item.children[0].id = user1Deck[0].war
-            //    cardHeader = document.createElement("p")
-            //    cardHeader.innerText = user1Deck[0].name
-                    item.children[1].classList.add(`${user1Deck[0].war}`)
-               item.children[1].innerHTML = `<p class = "text-block">${user1Deck[0].name}</p><p class = "text-block">WAR: ${user1Deck[0].war}</p>`
-               let card = item.children[0]
-                if (user1Deck[0].war < 50) {
-                    card.classList.add("low-card")
-                }
-                if (user1Deck[0].war > 50 && user1Deck[0].war < 100) {
-                    card.classList.add("mid-card")
-                }
-                if (user1Deck[0].war > 100 && user1Deck[0].war < 140) {
-                    card.classList.add("high-card")
-                }
-                if (user1Deck[0].war > 140) {
-                    card.classList.add("legendary-card")
-                }
-                if (user1Deck[0].name === "Babe Ruth") {
-                    card.classList.add("Babe-Ruth-card")
-                }
-               // item.children[1].innerText = cardHeader.innerText
-                // pWar.innerText = `WAR: ${user1Deck[0].war}`
-                // cardHeader.classList.add('text-block')
-                user1Deck.splice(0,1)
+          if (TURN < 1){
+            let playerHand = Array.from(document.getElementsByClassName('container'))
+          playerHand.forEach(card => {
+
+              if (card.id !== "user-deck") {
+                  card.remove()
+              }
+          })
+
+
+
+
+
+        //     // console.log(playerHand)
+        //   for (let playerCardinHand of playerHand) {
+        //       console.log(playerCardinHand)
+        //       playerCardinHand.remove()
+        //     //   if (item.id !== "user-deck") {
+        //     //     }
+        //     }
+            dealNewCard()
+            dealNewCard()
+            dealNewCard()
+            dealNewCard()
+            dealNewCard()
+            TURN++
+          }
+        
+            //     item.children[0].src = user1Deck[0].image
+            //     console.log("maybe", item.children[0])
+            //     item.children[0].id = user1Deck[0].war
+
+            // //    cardHeader = document.createElement("p")
+            // //    cardHeader.innerText = user1Deck[0].name
+            //         item.children[1].classList.add(`${user1Deck[0].war}`)
+            //    item.children[1].innerHTML = `<p class = "text-block">${user1Deck[0].name}</p><p class = "text-block">WAR: ${user1Deck[0].war}</p>`
+            //    let card = item.children[0]
+            //     if (user1Deck[0].war < 45) {
+            //         card.classList.add("low-card")
+            //     }
+            //     if (user1Deck[0].war >= 45 && user1Deck[0].war < 90) {
+            //         card.classList.add("mid-card")
+            //     }
+            //     if (user1Deck[0].war >= 90 && user1Deck[0].war < 140) {
+            //         card.classList.add("high-card")
+            //     }
+            //     if (user1Deck[0].war >= 140) {
+            //         card.classList.add("legendary-card")
+            //     }
+            //     if (user1Deck[0].name === "Babe Ruth") {
+            //         card.classList.add("Babe-Ruth-card")
+            //     }
+            //    // item.children[1].innerText = cardHeader.innerText
+            //     // pWar.innerText = `WAR: ${user1Deck[0].war}`
+            //     // cardHeader.classList.add('text-block')
+            //     user1Deck.splice(0,1)
         } else {
         let card = document.getElementById(e.target.id)
           card.classList.toggle('is-flipped');
@@ -207,13 +254,12 @@ function getPlayers(){
                         e.target.src = blankCardBack
                         baseballCard = document.createElement("div")    
                         e.target.append(baseballCard)
+                        
 
                     } //end of if statement player.name = node.innertext
                 } //end of if card is flipped
             })
         }
-    }
-}
           if (e.target.className === "card"){
                 if(player.name === e.target.parentNode.innerText) {
                     e.target.src = player.image
@@ -231,33 +277,57 @@ function drag(dragevent) {
 function evaluateBattle(){
   let computerPlayingCard = document.getElementsByClassName("computer-in-play")[0]
   let userPlayingCard = document.getElementsByClassName("in-play")[0]
-  if (computerPlayingCard.id < userPlayingCard.id){
-      let battleScore = userPlayingCard.id - computerPlayingCard.id 
+ let userCurrentCardWarScore = parseInt(userPlayingCard.id, 10) 
+  let computerCurrentCardWarScore = parseInt(computerPlayingCard.id, 10)
+    if (userCurrentCardWarScore > computerCurrentCardWarScore){
+        // console.log("you won", userCurrentCardWarScore)
+        // console.log("you won")
+      let battleScore = userCurrentCardWarScore - computerCurrentCardWarScore
       userScore = userScore + battleScore
-      if (userScore < 0) {
-          userScore = 0
-      }
+    //   if (userScore < 0) {
+    //       userScore = 0
+    //   }
+  
     document.getElementById('player-score').children[0].innerText = parseInt(userScore, 10)
-  }else if (computerPlayingCard.id > userPlayingCard.id) {
-      battleScore = computerPlayingCard.id - userPlayingCard.id
+    // console.log(userPlayingCard)
+    // console.log(computerPlayingCard)
+    } else if (computerCurrentCardWarScore > userCurrentCardWarScore) {
+      battleScore = computerCurrentCardWarScore - userCurrentCardWarScore
       computerScore = computerScore + battleScore
-      if (computerScore < 0) {
-          computerScore = 0
-      }
+        // console.log("you lost", typeof userPlayingCard.id)
+    //   console.log("you lost", computerPlayingCard.id)
+    //   if (computerScore < 0) {
+    //       computerScore = 0
+    //   }
       document.getElementById('computer-score').children[0].innerText = parseInt(computerScore,10)
     }
     setTimeout(function(){
         computerPlayingCard.remove()
         userPlayingCard.remove()
     }, 1000)
-
+    if (computerScore > 200 || userScore > 200){
+        let finalScore = 0
     if(computerScore > 200){
-        console.log("Computer Wins!")
+        finalScore = -(computerScore - userScore)
+        // console.log(finalScore)
     }
     if (userScore > 200){
-        console.log("You Win!")
+        finalScore = userScore - computerScore
+        // console.log(finalScore)
     }
-}
+
+    fetch(`http://localhost:3000/users/games/new`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+    },
+    body: JSON.stringify({
+        "score": finalScore,
+        "username": username
+    })
+    })
+}}
 function drop(dropevent) {
     dropevent.preventDefault()
     let data = dropevent.dataTransfer.getData("text")
@@ -276,18 +346,19 @@ function dealNewCard() {
     document.getElementById('playing-field').classList.remove('pointer')
     let newcard = document.createElement('div')
     newcard.classList.add("container")
-    newcard.innerHTML = `<img src=${user1Deck[0].image} class = "card" draggable = "true" ondragstart = "drag(event)" id= "${user1Deck[0].war}" > <div class = "text-block ${user1Deck[0].war}"><p class = "text-block">${user1Deck[0].name}</p><p class = "text-block">WAR: ${user1Deck[0].war}</p></div></div>`
+
+    newcard.innerHTML = `<img src=${user1Deck[0].image} class = "card" draggable = "true" ondragstart = "drag(event)" id= "${user1Deck[0].war}" > <div class = "text-block ${user1Deck[0].war}"><p class = "text-block">${user1Deck[0].name}</p><p class = "text-block"> WAR: ${user1Deck[0].war}</p></div></div>`
     document.getElementsByClassName("player-cards")[0].prepend(newcard)
-    if (user1Deck[0].war < 50) {
+    if (user1Deck[0].war < 45) {
         newcard.classList.add("low-card")
     }
-    if (user1Deck[0].war > 50 && user1Deck[0].war < 100) {
+    if (user1Deck[0].war >= 45 && user1Deck[0].war < 90) {
         newcard.classList.add("mid-card")
     }
-    if (user1Deck[0].war > 100 && user1Deck[0].war < 140) {
+    if (user1Deck[0].war >= 90 && user1Deck[0].war < 140) {
         newcard.classList.add("high-card")
     }
-    if (user1Deck[0].war > 140) {
+    if (user1Deck[0].war >= 140) {
         newcard.classList.add("legendary-card")
     }
     if (user1Deck[0].name === "Babe Ruth") {
@@ -295,32 +366,56 @@ function dealNewCard() {
     }
     newcard.id = user1Deck[0].war
     user1Deck.splice(0, 1)
+    TURN = 0
 }
-
-
 function dealComputerCard(){
     if (document.getElementsByClassName("computer-in-play").length < 1) {
         let computerPlayingCard = document.createElement("img")
-
-        computerPlayingCard.src = computerDeck[0].image
+        computerHand = []
+        let i = 0
+        let moneyCard
+        while (i < 5) {
+            const randomComputerCard = computerDeck[[Math.floor(Math.random() * computerDeck.length)]]
+            computerHand.push(randomComputerCard)
+           if (computerHand.length < 2){
+             moneyCard = computerHand[0]  }
+            if (computerHand[i].war > moneyCard.war){
+               moneyCard = computerHand[i]
+            }
+            i ++ 
+        }
+        // console.log("money", moneyCard)
+        // console.log(computerHand)
+        //  let index = 0
+        //  while (index < 5){
+        //     if(computerHand[index + 1].war > computerHand[index].war){
+        //      moneyCard = computerHand[index + 1]
+        //      index++
+        //     }
+        // }
+        // console.log(computerHand)
+        // console.log(moneyCard)
+        computerPlayingCard.src = moneyCard.image
         document.getElementById("playing-field").appendChild(computerPlayingCard)
-        if (computerDeck[0].war < 50) {
+        if (moneyCard.war < 45) {
             computerPlayingCard.classList.add("low-card")
         }
-        if (computerDeck[0].war > 50 && computerDeck[0].war < 100) {
+        if (moneyCard.war >= 50 && moneyCard.war < 90) {
             computerPlayingCard.classList.add("mid-card")
         }
-        if (computerDeck[0].war > 100 && computerDeck[0].war < 140) {
+        if (moneyCard.war >= 90 && moneyCard.war < 140) {
             computerPlayingCard.classList.add("high-card")
         }
-        if (computerDeck[0].war > 140) {
+        if (moneyCard.war >= 140) {
             computerPlayingCard.classList.add("legendary-card")
         }
-        if (computerDeck[0].name === "Babe Ruth") {
+        if (moneyCard.name === "Babe Ruth") {
             computerPlayingCard.classList.add("Babe-Ruth-card")
         }
-        computerPlayingCard.id = computerDeck[0].war
+        computerPlayingCard.id = moneyCard.war
         computerPlayingCard.classList.add("computer-in-play")
-        computerDeck.splice(0, 1)
+       moneyCardIndex = computerDeck.indexOf(moneyCard)
+       computerDeck.splice(moneyCardIndex, 1)
+    //    console.log(computerDeck)
     }
 }
