@@ -37,71 +37,14 @@ function getPlayers(){
         .then(players => {
             
             players.forEach(player=>{
-                if (player.job === "pitcher"){
-                // pitcherCard = document.createElement("div")
-                // pitcherName = document.createElement("p")
-                // pitcherWar = document.createElement("p")
-                // pitcherWins = document.createElement("p")
-                // pitcherLosses = document.createElement("p")
-                // pitcherEra = document.createElement("p")
-                // pitcherStrikeouts = document.createElement("p")
-                // pitcherInningsPitched = document.createElement("p")
-                // pitcherSaves = document.createElement("p")
-                // pitcherImg = document.createElement("img")
-                // pitcherCard = document.createElement("div")
-
-                // pitcherName.innerText = player.name         
-                // pitcherWar.innerText = player.war
-                // pitcherWins.innerText = player.wins
-                // pitcherLosses.innerText = player.losses
-                // pitcherEra.innerText = player.era
-                // pitcherStrikeouts.innerText = player.strikeouts
-                // pitcherInningsPitched.innerText = player.innings_pitched
-                // pitcherSaves.innerText = player.saves
-                // pitcherImg.src = player.image
-
-                
-                // pitcherCard.appendChild(pitcherName)
-                // pitcherCard.append(pitcherWar)
-                // pitcherCard.append(pitcherWins) 
-                // pitcherCard.append(pitcherLosses)
-                // pitcherCard.append(pitcherEra)
-                // pitcherCard.append(pitcherStrikeouts)
-                // pitcherCard.append(pitcherInningsPitched)
-                // pitcherCard.append(pitcherSaves)
-                // pitcherCard.append(pitcherImg)
-                    const pitcherCard = document.createElement("div")
-                //     pitcherCard.innerHTMLHTML = `
-                // <div>
-                //     <span>Name</span><p>${player.name}</p>
-                //     <span>War</span><p>${player.war}</p>
-                //     <span>Wins</span><p>${player.wins}</p>
-                //     <span>Losses</span><p>${player.losses}</p>
-                //     <span>ERA</span><p>${player.era}</p>
-                //     <span>Saves</span><p>${player.saves}</p>
-                //     <span>IP</span><p>${player.innings_pitched}</p>
-                //     </div>
-                //     `
+                if (player.job === "pitcher")
 
                 pitchersArray.push(player)
                 allPlayersArray.push(player)
                 pitcherCardsArray.push(pitcherCard)
                 allPlayerCardsArray.push(pitcherCard)
-
                                 }
                 if (player.job === "hitter"){
-                // hitterCard = document.createElement("div")
-                // hitterName = document.createElement("p")
-                // hitterWar = document.createElement("p")
-                // hitterAvg = document.createElement("p")
-                // hitterHr = document.createElement("p")
-                // hitterRbi = document.createElement("p")
-                // hitterRuns = document.createElement("p")
-                // hitterAtBats = document.createElement("p")
-                // hitterHits = document.createElement("p")
-                // hitterImg = document.createElement("img")
-                // hitterCard = document.createElement("div")
-                // hitterStolenBases = document.createElement("p")
 
                 const hitterCard = document.createElement("div")
                     hitterCard.innerHTMLHTML = 
@@ -117,30 +60,6 @@ function getPlayers(){
                     <span>Avg</span><p>${player.avg}</p>
                     <span>SB</span><p>${player.stolen_bases}</p>
                 </div>
-                `
-
-                // hitterName.innerText = player.name         
-                // hitterWar.innerText = player.war
-                // hitterAvg.innerText = player.avg
-                // hitterHr.innerText = player.hr
-                // hitterRbi.innerText = player.rbi
-                // hitterRuns.innerText = player.runs
-                // hitterAtBats.innerText = player.at_bats
-                // hitterHits.innerText = player.hits
-                // hitterStolenBases.innerText = player.stolen_bases
-                // hitterImg.src = player.image
-
-                
-                // hitterCard.appendChild(hitterName)
-                // hitterCard.append(hitterWar)
-                // hitterCard.append(hitterAvg) 
-                // hitterCard.append(hitterHr)
-                // hitterCard.append(hitterRbi)
-                // hitterCard.append(hitterRuns)
-                // hitterCard.append(hitterAtBats)
-                // hitterCard.append(hitterHits)
-                // hitterCard.append(hitterStolenBases)
-                // hitterCard.append(hitterImg)
 
                     allPlayersArray.push(player)
                     hittersArray.push(player)
@@ -280,25 +199,13 @@ function evaluateBattle(){
  let userCurrentCardWarScore = parseInt(userPlayingCard.id, 10) 
   let computerCurrentCardWarScore = parseInt(computerPlayingCard.id, 10)
     if (userCurrentCardWarScore > computerCurrentCardWarScore){
-        // console.log("you won", userCurrentCardWarScore)
-        // console.log("you won")
       let battleScore = userCurrentCardWarScore - computerCurrentCardWarScore
       userScore = userScore + battleScore
-    //   if (userScore < 0) {
-    //       userScore = 0
-    //   }
   
     document.getElementById('player-score').children[0].innerText = parseInt(userScore, 10)
-    // console.log(userPlayingCard)
-    // console.log(computerPlayingCard)
     } else if (computerCurrentCardWarScore > userCurrentCardWarScore) {
       battleScore = computerCurrentCardWarScore - userCurrentCardWarScore
       computerScore = computerScore + battleScore
-        // console.log("you lost", typeof userPlayingCard.id)
-    //   console.log("you lost", computerPlayingCard.id)
-    //   if (computerScore < 0) {
-    //       computerScore = 0
-    //   }
       document.getElementById('computer-score').children[0].innerText = parseInt(computerScore,10)
     }
     setTimeout(function(){
