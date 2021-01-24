@@ -75,11 +75,6 @@ function getPlayers(){
         .catch(err => console.error("error: ", err, err.stack))
     }
 
-    // const pWar = document.createElement("p")
-    // pWar.classList.add('text-block')
-    // d
-    // .appendChild(pWar)
-
 
 
     document.addEventListener('click', function(e) {
@@ -136,34 +131,6 @@ function getPlayers(){
             TURN++
           }
         
-            //     item.children[0].src = user1Deck[0].image
-            //     console.log("maybe", item.children[0])
-            //     item.children[0].id = user1Deck[0].war
-
-            // //    cardHeader = document.createElement("p")
-            // //    cardHeader.innerText = user1Deck[0].name
-            //         item.children[1].classList.add(`${user1Deck[0].war}`)
-            //    item.children[1].innerHTML = `<p class = "text-block">${user1Deck[0].name}</p><p class = "text-block">WAR: ${user1Deck[0].war}</p>`
-            //    let card = item.children[0]
-            //     if (user1Deck[0].war < 45) {
-            //         card.classList.add("low-card")
-            //     }
-            //     if (user1Deck[0].war >= 45 && user1Deck[0].war < 90) {
-            //         card.classList.add("mid-card")
-            //     }
-            //     if (user1Deck[0].war >= 90 && user1Deck[0].war < 140) {
-            //         card.classList.add("high-card")
-            //     }
-            //     if (user1Deck[0].war >= 140) {
-            //         card.classList.add("legendary-card")
-            //     }
-            //     if (user1Deck[0].name === "Babe Ruth") {
-            //         card.classList.add("Babe-Ruth-card")
-            //     }
-            //    // item.children[1].innerText = cardHeader.innerText
-            //     // pWar.innerText = `WAR: ${user1Deck[0].war}`
-            //     // cardHeader.classList.add('text-block')
-            //     user1Deck.splice(0,1)
         } else {
         let card = document.getElementById(e.target.id)
           card.classList.toggle('is-flipped');
@@ -291,17 +258,6 @@ function dealComputerCard(){
             }
             i ++ 
         }
-        // console.log("money", moneyCard)
-        // console.log(computerHand)
-        //  let index = 0
-        //  while (index < 5){
-        //     if(computerHand[index + 1].war > computerHand[index].war){
-        //      moneyCard = computerHand[index + 1]
-        //      index++
-        //     }
-        // }
-        // console.log(computerHand)
-        // console.log(moneyCard)
         computerPlayingCard.src = moneyCard.image
         document.getElementById("playing-field").appendChild(computerPlayingCard)
         if (moneyCard.war < 45) {
